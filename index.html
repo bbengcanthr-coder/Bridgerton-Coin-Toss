@@ -2,259 +2,57 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridgerton Night: The Golden Coin Toss</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #0B1021; /* Midnight Blue */
-            --gold-primary: #D4AF37;
-            --gold-light: #F3E5AB;
-            --text-light: #E0E0E0;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(circle at top right, #1A2542, transparent),
-                              url('https://www.transparenttextures.com/patterns/stardust.png'); /* พื้นหลังดาวระยิบระยับ */
-            color: var(--text-light);
-            font-family: 'Sarabun', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--gold-primary);
-            text-align: center;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 400px; /* พอดีหน้าจอมือถือ */
-            padding: 20px;
-            box-sizing: border-box;
-            background: rgba(11, 16, 33, 0.85);
-            border: 1px solid var(--gold-primary);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-            backdrop-filter: blur(5px);
-        }
-
-        .screen { display: none; }
-        .screen.active { display: block; }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid var(--gold-primary);
-            background: transparent;
-            color: var(--gold-light);
-            font-size: 16px;
-            border-radius: 5px;
-            box-sizing: border-box;
-            text-align: center;
-            font-family: 'Sarabun', sans-serif;
-        }
-
-        input::placeholder { color: rgba(243, 229, 171, 0.5); }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #B8860B, #D4AF37);
-            color: #000;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            font-family: 'Playfair Display', serif;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        button:active { transform: scale(0.98); }
-
-        /* ส่วนของเกมเพลย์ */
-        .control-group {
-            margin-bottom: 20px;
-        }
-        
-        .control-group label {
-            display: flex;
-            justify-content: space-between;
-            color: var(--gold-light);
-            margin-bottom: 8px;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--gold-primary);
-        }
-
-        .coin-preview {
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #F3E5AB 0%, #D4AF37 70%, #B8860B 100%);
-            border-radius: 50%;
-            margin: 20px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5), inset 0 0 10px rgba(255,255,255,0.5);
-            border: 2px solid #FFDF00;
-            position: relative;
-        }
-
-        .coin-name {
-            color: #4A3500;
-            font-family: 'Playfair Display', serif;
-            font-weight: bold;
-            font-size: 14px;
-            text-align: center;
-            word-break: break-all;
-            padding: 0 5px;
-        }
-
-        .leaderboard-list {
-            list-style: none;
-            padding: 0;
-            max-height: 250px;
-            overflow-y: auto;
-        }
-
-        .leaderboard-list li {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            font-size: 16px;
-        }
-        .leaderboard-list li span:last-child { color: var(--gold-primary); font-weight: bold; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bridgerton Night SSU x BCU - Coin Toss</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Playfair+Display:ital,wght@0,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </head>
 <body>
-
-<div class="container">
-    
-    <div id="loginScreen" class="screen active">
-        <h1>Bridgerton Night<br><span style="font-size: 18px;">SSU x BCU</span></h1>
-        <p style="text-align: center;">ลงนามชื่อของท่าน เพื่อร่วมประลองโยนเหรียญทอง (เล่นได้เพียง 1 ครั้ง)</p>
-        <input type="text" id="playerName" placeholder="กรอกชื่อเล่นของท่าน..." maxlength="15">
-        <button onclick="startGame()">เข้าสู่ลานประลอง</button>
-        <p style="text-align: center; font-size: 12px; margin-top: 15px; color: #888;">*ระบบมีการบันทึกข้อมูลเพื่อป้องกันการเล่นซ้ำ</p>
-    </div>
-
-    <div id="gameScreen" class="screen">
-        <h2>เตรียมตัวโยนเหรียญ</h2>
-        
-        <div class="coin-preview">
-            <span class="coin-name" id="displayCoinName">Name</span>
+    <div class="container">
+        <div id="login-screen" class="screen active">
+            <h1 class="theme-title">Bridgerton Night</h1>
+            <h2 class="theme-subtitle">SSU x BCU</h2>
+            <div class="card">
+                <p>โปรดลงนามเพื่อเข้าร่วมการแข่งขันโยนเหรียญเกียรติยศ<br>(ท่านมีสิทธิ์โยนได้เพียง 1 ครั้งเท่านั้น)</p>
+                <input type="text" id="playerName" placeholder="กรอกชื่อของท่าน..." maxlength="15">
+                <button id="startBtn" class="gold-btn">เข้าสู่ลานประลอง</button>
+            </div>
         </div>
 
-        <div class="control-group">
-            <label><span>องศาการเหวี่ยง (Angle)</span> <span id="angleValue">45°</span></label>
-            <input type="range" id="angleSlider" min="10" max="80" value="45" oninput="updateValues()">
+        <div id="game-screen" class="screen">
+            <div class="hud">
+                <span id="display-name">ผู้เล่น: -</span>
+            </div>
+            
+            <div class="game-area">
+                <div class="angle-meter">
+                    <div id="angle-pointer"></div>
+                </div>
+                
+                <div id="coin" class="gold-coin">
+                    <span id="coin-name">Name</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="power-bar-container">
+                    <div id="power-bar"></div>
+                </div>
+                <button id="throwBtn" class="gold-btn">กดค้างเพื่อสะสมพลัง / ปล่อยเพื่อโยน</button>
+            </div>
         </div>
 
-        <div class="control-group">
-            <label><span>แรงเหวี่ยง (Power)</span> <span id="powerValue">50%</span></label>
-            <input type="range" id="powerSlider" min="1" max="100" value="50" oninput="updateValues()">
+        <div id="leaderboard-screen" class="screen">
+            <h1 class="theme-title">Leaderboard</h1>
+            <h2 id="result-distance">คุณโยนได้: 0 เมตร</h2>
+            <div class="leaderboard-card">
+                <ol id="leaderboard-list">
+                    </ol>
+            </div>
         </div>
-
-        <button onclick="throwCoin()">โยนเหรียญทอง!</button>
     </div>
-
-    <div id="resultScreen" class="screen">
-        <h2>ผลการประลอง</h2>
-        <h3 id="resultDistance" style="font-size: 2.5em; margin: 10px 0;">0.00 m</h3>
-        <p style="text-align: center;">สถิติผู้นำสูงสุดประจำค่ำคืนนี้</p>
-        
-        <ul class="leaderboard-list" id="leaderboard">
-            <li><span>1. ท่านดยุก</span> <span>85.42 m</span></li>
-            <li><span>2. เลดี้ดาฟนี่</span> <span>72.10 m</span></li>
-        </ul>
-    </div>
-
-</div>
-
-<script>
-    let currentPlayer = "";
-    let hasPlayed = false;
-
-    // อัปเดตตัวเลขเมื่อเลื่อนแถบ
-    function updateValues() {
-        document.getElementById('angleValue').innerText = document.getElementById('angleSlider').value + '°';
-        document.getElementById('powerValue').innerText = document.getElementById('powerSlider').value + '%';
-    }
-
-    // เปลี่ยนหน้าจอ
-    function showScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-    }
-
-    // กดปุ่มเข้าสู่ลานประลอง
-    function startGame() {
-        const nameInput = document.getElementById('playerName').value.trim();
-        if (nameInput === "") {
-            alert("โปรดลงนามชื่อของท่านก่อนเข้าสู่ลานประลอง");
-            return;
-        }
-        
-        // **ในระบบจริง ต้องเช็คกับ Firebase ตรงนี้ว่าชื่อนี้เคยเล่นหรือยัง**
-        // สมมติว่าผ่าน
-        currentPlayer = nameInput;
-        document.getElementById('displayCoinName').innerText = currentPlayer;
-        showScreen('gameScreen');
-    }
-
-    // กดปุ่มโยนเหรียญ
-    function throwCoin() {
-        if (hasPlayed) {
-            alert("ท่านได้ใช้สิทธิ์การโยนในค่ำคืนนี้ไปแล้ว!");
-            return;
-        }
-
-        const angle = parseInt(document.getElementById('angleSlider').value);
-        const power = parseInt(document.getElementById('powerSlider').value);
-        
-        // คำนวณระยะทาง (สูตรโปรเจกไทล์แบบจำลอง: ระยะทาง = ความเร็ว^2 * sin(2*องศา) / แรงโน้มถ่วง)
-        // มีการเพิ่มการสุ่มเล็กน้อย (RNG) เพื่อไม่ให้คนที่รู้สูตร (มุม 45 องศา พลัง 100) ได้ระยะเท่ากันเป๊ะๆ ทุกคน
-        const radian = angle * (Math.PI / 180);
-        const velocity = power * 1.5; // ตัวคูณพลัง
-        const gravity = 9.8;
-        
-        // เพิ่มค่าโชคชะตา (Random factor) +/- 5%
-        const luckFactor = 0.95 + (Math.random() * 0.1); 
-
-        let distance = ((Math.pow(velocity, 2) * Math.sin(2 * radian)) / gravity) * luckFactor;
-        distance = distance.toFixed(2); // ทศนิยม 2 ตำแหน่ง
-
-        hasPlayed = true; // ล็อกไม่ให้เล่นซ้ำในเซสชันนี้
-
-        // **ในระบบจริง: ส่งค่า currentPlayer และ distance ขึ้นไปบันทึกบน Firebase Firestore ตรงนี้**
-        
-        // แสดงผล
-        document.getElementById('resultDistance').innerText = distance + " m";
-        
-        // จำลองการเพิ่มตัวเองเข้า Leaderboard
-        const ul = document.getElementById('leaderboard');
-        const li = document.createElement('li');
-        li.innerHTML = `<span>⭐ ${currentPlayer} (คุณ)</span> <span>${distance} m</span>`;
-        ul.prepend(li); // ดันตัวเองไปบนสุดชั่วคราวเพื่อดูผล
-
-        showScreen('resultScreen');
-    }
-</script>
-
+    <script src="app.js"></script>
 </body>
 </html>
