@@ -1,12 +1,3 @@
-:root {
-    --navy: #1a2238;
-    --gold: #d4af37;
-    --gold-light: #f3e5ab;
-    --cream: #fdfbf7;
-    --font-eng: 'Playfair Display', serif;
-    --font-thai: 'Sarabun', sans-serif;
-}
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,205 +5,201 @@
 }
 
 body {
-    background-color: var(--navy);
-    color: var(--cream);
-    font-family: var(--font-thai);
+    background-color: #0a1128; /* Royal Blue */
+    color: #d4af37; /* Gold */
+    font-family: 'Cormorant Garamond', serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-image: radial-gradient(circle, rgba(212,175,55,0.1) 0%, rgba(26,34,56,1) 70%);
+    height: 100vh;
     overflow: hidden;
+    background-image: radial-gradient(circle, #1a2754 0%, #0a1128 100%);
 }
 
-.app-container {
+.container {
     width: 100%;
-    max-width: 400px;
-    height: 100vh;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    max-width: 480px;
+    height: 100%;
+    position: relative;
 }
 
 .screen {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 100%;
+    padding: 20px;
+    text-align: center;
 }
 
-.hidden { display: none !important; }
+.screen.active {
+    display: flex;
+}
 
-.title {
-    font-family: var(--font-eng);
-    color: var(--gold);
-    font-size: 2.3rem;
-    text-align: center;
-    margin-bottom: 0.5rem;
+.theme-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-style: italic;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 5px;
 }
 
-.subtitle {
-    font-size: 0.85rem;
-    color: var(--gold-light);
-    text-align: center;
-    margin-bottom: 1.5rem;
-    letter-spacing: 1px;
+.theme-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #d4af37;
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
 }
 
 input[type="text"] {
     width: 100%;
-    padding: 1rem;
-    border: 2px solid var(--gold);
-    background: rgba(253, 251, 247, 0.1);
-    color: var(--cream);
-    font-family: var(--font-thai);
-    font-size: 1.1rem;
-    border-radius: 8px;
+    padding: 12px;
+    margin: 20px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #d4af37;
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
     text-align: center;
     outline: none;
-    margin-bottom: 1rem;
 }
 
-.btn-gold {
-    width: 100%;
-    padding: 1.1rem;
+input[type="text"]::placeholder {
+    color: rgba(212, 175, 55, 0.5);
+}
+
+.gold-btn {
     background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7);
-    color: var(--navy);
+    color: #0a1128;
     border: none;
-    border-radius: 8px;
-    font-family: var(--font-thai);
-    font-size: 1.1rem;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-family: 'Playfair Display', serif;
     font-weight: bold;
+    border-radius: 30px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-}
-
-.btn-gold:disabled {
-    background: #555 !important;
-    color: #aaa;
-    box-shadow: none;
-    cursor: not-allowed;
-}
-
-.btn-text {
-    background: none;
-    border: none;
-    color: var(--gold-light);
-    font-family: var(--font-thai);
-    margin-top: 1rem;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-/*โซนระบบเกจวัด*/
-.gauge-section {
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    transition: transform 0.1s;
     width: 100%;
+}
+
+.gold-btn:active {
+    transform: scale(0.95);
+}
+
+/* Game Area */
+.game-area {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.gauge-container {
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    position: relative;
+}
+
+/* เหรียญทอง */
+.gold-coin {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(ellipse at center, #ffd700 0%, #b8860b 100%);
+    border-radius: 50%;
+    border: 4px solid #da8d15;
     display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.5), 0 10px 20px rgba(0,0,0,0.5);
+    position: absolute;
+    bottom: 20%;
+    transition: transform 1s ease-out, bottom 1s ease-out, opacity 1s;
 }
 
-.gauge-label {
-    font-size: 0.85rem;
-    color: var(--gold-light);
+#coin-name {
+    color: #5c3a00;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    font-size: 1rem;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+    word-break: break-all;
+    text-align: center;
+    padding: 5px;
 }
 
-.gauge-bar {
+/* เกจพลังและองศา */
+.controls {
+    width: 100%;
+    padding: 20px;
+}
+
+.power-bar-container {
     width: 100%;
     height: 20px;
-    background: rgba(253, 251, 247, 0.1);
-    border: 1px solid var(--gold);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #d4af37;
     border-radius: 10px;
-    position: relative;
+    margin-bottom: 20px;
     overflow: hidden;
 }
 
-/* ตัววิ่งทิศทาง (ซ้าย-ขวา) */
-#angle-pointer {
-    width: 6px;
-    height: 100%;
-    background: #ffeb73;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 0 8px #fff;
-}
-
-/* หลอดพลังงาน */
-#power-fill {
+#power-bar {
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, #b38728, #ffeb73);
-    box-shadow: 0 0 10px rgba(255, 235, 115, 0.5);
+    background: linear-gradient(90deg, #d4af37, #ff5e62);
 }
 
-/* ลานเหรียญ */
-.coin-arena {
-    flex: 1;
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.gold-coin {
-    width: 75px;
+.angle-meter {
+    width: 150px;
     height: 75px;
-    background: linear-gradient(45deg, #ffd700, #daa520, #ffdf00, #b8860b);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.3), 0 8px 15px rgba(0,0,0,0.5);
-    border: 3px solid #ffeb73;
+    border-top-left-radius: 75px;
+    border-top-right-radius: 75px;
+    border: 2px solid #d4af37;
+    border-bottom: none;
     position: absolute;
-    bottom: 20px;
-    transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+    bottom: calc(20% + 120px);
+    overflow: hidden;
 }
 
-.gold-coin span {
-    font-family: var(--font-eng);
-    color: var(--navy);
-    font-size: 1.8rem;
-    font-weight: bold;
+#angle-pointer {
+    width: 2px;
+    height: 75px;
+    background: #ff5e62;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: rotate(-90deg);
 }
 
-#distance-result {
-    font-family: var(--font-eng);
-    font-size: 2.8rem;
-    color: var(--gold);
-    text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
-    z-index: 10;
-    margin-bottom: 40px;
-}
-
-/* กระดานคะแนน */
-.leaderboard {
-    list-style: none;
+/* Leaderboard */
+.leaderboard-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #d4af37;
     width: 100%;
-    max-height: 55vh;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    max-height: 300px;
     overflow-y: auto;
-    border-top: 1px solid var(--gold);
-    border-bottom: 1px solid var(--gold);
-    padding: 0.5rem 0;
 }
 
-.leaderboard li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.7rem;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+.leaderboard-card ol {
+    padding-left: 20px;
+    text-align: left;
+    font-size: 1.2rem;
+}
+.leaderboard-card li {
+    margin-bottom: 10px;
+    border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
+    padding-bottom: 5px;
 }
