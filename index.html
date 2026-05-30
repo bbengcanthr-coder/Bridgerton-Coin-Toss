@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bridgerton Coin Toss | SSU x BCU</title>
-    <!-- เรียกดึงฟอนต์หรูหรา -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -24,6 +23,25 @@
         <div id="game-screen" class="screen hidden">
             <h2 class="title" id="display-name">ผู้ท้าชิง</h2>
             
+            <!-- โซนเกจวัดฝีมือ -->
+            <div class="gauge-section">
+                <!-- เกจเหวี่ยง (ทิศทาง) -->
+                <div class="gauge-container">
+                    <span class="gauge-label">ทิศทางการเหวี่ยง (Swing)</span>
+                    <div class="gauge-bar" id="angle-gauge">
+                        <div class="gauge-pointer" id="angle-pointer"></div>
+                    </div>
+                </div>
+                
+                <!-- เกจแรงปา (กำลัง) -->
+                <div class="gauge-container">
+                    <span class="gauge-label">แรงในการปา (Power)</span>
+                    <div class="gauge-bar" id="power-gauge">
+                        <div class="gauge-fill" id="power-fill"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="coin-arena">
                 <div id="coin" class="gold-coin">
                     <span id="coin-text">S</span>
@@ -31,24 +49,24 @@
                 <div id="distance-result" class="hidden">0.00 m</div>
             </div>
 
-            <button id="tossBtn" class="btn-gold">โยนเหรียญ</button>
+            <!-- ปุ่มควบคุมแบบ Multi-stage -->
+            <button id="actionBtn" class="btn-gold">ล็อกทิศทางการเหวี่ยง</button>
             <button id="viewBoardBtn" class="btn-text">ดูรายนามผู้ชนะ</button>
         </div>
 
         <!-- หน้ากระดานผู้นำ -->
         <div id="leaderboard-screen" class="screen hidden">
             <h2 class="title">Society Papers</h2>
-            <p class="subtitle">สถิติการโยนเหรียญที่ไกลที่สุด</p>
+            <p class="subtitle">สถิติการโยนเหรียญที่ไกลที่สุด (สิทธิ์ท่านละ 1 ครั้ง)</p>
             
             <ul id="leaderboard-list" class="leaderboard">
-                <!-- รายชื่อจะถูกแทรกผ่าน JS -->
+                <!-- รายชื่อจาก Firebase -->
             </ul>
             
-            <button id="backBtn" class="btn-text">กลับไปโยนเหรียญ</button>
+            <button id="backBtn" class="btn-text">กลับหน้าหลัก</button>
         </div>
     </div>
 
-    <!-- Firebase SDK (ใช้ Type Module) -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
